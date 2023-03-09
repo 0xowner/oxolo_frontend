@@ -1,44 +1,31 @@
 # Oxolo frontend application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- Created by ReactJs ( TypeScript)
+- Using .env for configuration
+- Using tanStack library for query and mutations
+- Using Mui/material librbary for UI tools
+# Project description
+There are 2 pages in this project, first for modify and position text element and the second page for showing history of changes.
+You can access them via following menus:
 
-## Available Scripts
+1-Player
 
-In the project directory, you can run:
+In this page, after text modifications and pressing Enter, The information  will be sent to server and will be stored in database. We keep the history of all changes so in futuer version, we can implement features like Undo/Redo and moving forward the history of changes.
+
+Dragging text elements also will sent information to server, so after dropping, the tex abd position will be saved in database.
+
+2- History
+
+You cab access all history of text and position of text element. in the future, we can add extra fields like color,fontsize and ...
+
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
+ّFor running the project, just run following command:
+```
+npm run start
+```
+The application will be started at port 3000.
 
 ## Stay in touch
 
