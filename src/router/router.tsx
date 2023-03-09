@@ -1,8 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
-import History from '../pages/History.component';
-import Logs from '../pages/Logs.component';
-import MainPlayer from '../pages/MainPlayer.component';
+import History from '../pages/History/History.component';
+import Player from '../pages/Player/Player.component';
 
 const router = createBrowserRouter([
   {
@@ -11,16 +10,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <MainPlayer />,
+        element: <Player />,
       },
       {
         path: 'History',
         element: <History />,
-      },
-
-      {
-        path: 'Logs',
-        element: <Logs />,
       },
     ],
   },

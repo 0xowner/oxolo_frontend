@@ -10,10 +10,6 @@ export default function ApplicationBar() {
       route: '',
     },
     {
-      name: 'Logs',
-      route: 'logs',
-    },
-    {
       name: 'History',
       route: 'history',
     },

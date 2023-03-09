@@ -7,20 +7,8 @@ function App() {
     <>
       <ApplicationBar />
       <Container>
-        <Grid container sx={{ marginTop: '80px' }}>
-          <Grid
-            item
-            xs={12}
-            sx={{
-              justifyContent: 'center',
-              display: 'flex',
-              border: '1px solid red',
-              height: '600px',
-              flexDirection: 'column',
-              width: '100%',
-              margin: 2,
-            }}
-          >
+        <Grid container className='containerGrid'>
+          <Grid item xs={12} className='mainGrid'>
             <Outlet />
           </Grid>
         </Grid>
