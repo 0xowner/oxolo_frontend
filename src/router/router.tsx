@@ -1,19 +1,21 @@
-import { createBrowserRouter } from 'react-router-dom';
-import App from '../App';
-import History from '../pages/History/History.component';
-import Player from '../pages/Player/Player.component';
+import { createBrowserRouter } from "react-router-dom";
+import App from "../App";
+import ErrorPage from "../pages/Error/Error.component";
+import History from "../pages/History/History.component";
+import Player from "../pages/Player/Player.component";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
-        path: '',
+        path: "",
         element: <Player />,
       },
       {
-        path: 'History',
+        path: "History",
         element: <History />,
       },
     ],

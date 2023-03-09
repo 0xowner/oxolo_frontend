@@ -1,6 +1,6 @@
 import { Grid, Container } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import ApplicationBar from './component/AppBar.component';
+import ApplicationBar from './component/AppBar/AppBar.component';
 import './App.css';
 function App() {
   return (
