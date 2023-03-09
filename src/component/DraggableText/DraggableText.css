@@ -2,3 +2,10 @@
   cursor: grabbing;
   font-size: 40px;
 }
+.frameBox{
+  color:Red;
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  font-size: 14px;
+}

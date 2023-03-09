@@ -1,10 +1,11 @@
-import { TextField } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import Draggable from 'react-draggable';
-import { AbsoluteFill } from 'remotion';
-import { ITextElement } from '../../general/interface';
-import './DraggableText.css';
+import { TextField } from "@mui/material";
+import { Box } from "@mui/system";
+import { useEffect, useState } from "react";
+import Draggable from "react-draggable";
+import { AbsoluteFill } from "remotion";
+import { ITextElement } from "../../general/interface";
+import { useCurrentFrame } from "remotion";
+import "./DraggableText.css";
 
 /**
  *   The Draggable component for text editing and changing position
@@ -22,21 +23,21 @@ export default function DraggableText({
   text,
   setText,
   position,
-  setPosition,
   saveInformation,
+  pause,
+  play,
 }: ITextElement) {
   const handleStop = (e: any, data: any) => {
     const position = {
       x: data.x,
       y: data.y,
     };
-    setPosition(position);
     setLocalPosition(position);
-    saveInformation();
+    saveInformation(position);
   };
 
   const handleEnter = (e: any) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       saveInformation();
     }
   };
@@ -52,30 +53,36 @@ export default function DraggableText({
     }
   }, [position]);
 
+  const frame = useCurrentFrame();
   return (
     <>
       <AbsoluteFill style={AbsoluteStyle}>
-        <Draggable onStop={handleStop} bounds='parent' position={localPosition}>
+        <Draggable
+          onStop={handleStop}
+          bounds="parent"
+          position={localPosition}
+          onStart={() => pause()}
+        >
           <div>
             <TextField
-              id='inputText'
-              helperText='Press enter to save changes'
-              className='inputStyle'
+              id="inputText"
+              helperText="Press enter to save changes"
+              className="inputStyle"
               onChange={(e) => setText(e.target.value)}
               value={text}
               onKeyDown={handleEnter}
             />
           </div>
         </Draggable>
+        <Box className="frameBox">Frame:{frame}</Box>
       </AbsoluteFill>
     </>
   );
 }
 
-// doesn work if move to css file, so I placed here
 const AbsoluteStyle = {
-  justifyContent: 'center',
-  alignItems: 'center',
+  justifyContent: "center",
+  alignItems: "center",
   fontSize: 30,
-  backgroundColor: 'white',
+  backgroundColor: "white",
 };
