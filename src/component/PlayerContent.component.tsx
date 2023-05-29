@@ -1,4 +1,4 @@
-import { AlertColor, Snackbar, TextField } from "@mui/material";
+import { AlertColor, IconButton, Snackbar, TextField } from "@mui/material";
 import { PlayerRef, Player } from "@remotion/player";
 import { useEffect, useRef, useState } from "react";
 import DraggableText from "./DraggableText/DraggableText.component";
@@ -9,23 +9,25 @@ import {
   SaveNewVisualInfoAddress,
 } from "../general/serviceAddress";
 import UsertAlert from "./UserAlert.component";
+import UndoIcon from '@mui/icons-material/Undo';
+import RedoIcon from '@mui/icons-material/Redo';
+import { getLSData } from "../utils/lsFunctions";
+import { pushNewWork, updateActiveIndx } from "../utils/updateWork";
 
 export const PlayerContent = ({ serviceResult }: IPlayerContent) => {
   const [open, setOpen] = useState<boolean>(false);
   const [alertText, setAlertText] = useState<string>("");
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>("success");
   // text are handled in two ways: movable input box and fixed one
-  const [text, setText] = useState<string | undefined>(
-    serviceResult.text || "new text"
-  );
-  const [position, setPosition] = useState<IPosition | undefined>(
-    serviceResult.position || { x: 0, y: 0 }
-  );
+  let lastPosition = getLSData('lastPosition');
+  const { text: updatedText, currentPostition } = lastPosition;
+  const [text, setText] = useState<string | undefined>(updatedText);
+  const [position, setPosition] = useState<IPosition>(currentPostition);
 
   // load text after getting information from server
-  useEffect(() => {
-    setText(serviceResult.text);
-  }, [serviceResult]);
+  // useEffect(() => {
+  //   setText(serviceResult.text);
+  // }, [serviceResult]);
 
   // manage player statuse when content is changing
   const playerRef = useRef<PlayerRef>(null);
@@ -38,12 +40,35 @@ export const PlayerContent = ({ serviceResult }: IPlayerContent) => {
   };
 
   const handleEnter = (e: any) => {
-    if (e.key === "Enter") saveInformation();
+    if (e.key === "Enter") { 
+      saveInformation(currentPostition);
+      pushNewWork(currentPostition, text);
+  }
   };
+
+  const onUndoClick = () => {
+    let {data = [], activeIndex: indx = 0}= getLSData("work");
+    if(indx !== 0) {
+      let {position: lastPos, text: txt} = data[indx - 1];
+          setPosition(lastPos);
+          setText(txt);
+          updateActiveIndx("UNDO");
+    }
+  }
+
+  const onRedoClick = () => {
+    let {data = [], activeIndex: indx = 0} = getLSData("work");
+    if(indx !== 9) {
+      let {position: lastPos, text: txt} = data[indx + 1];
+          setPosition(lastPos);
+          setText(txt);
+          updateActiveIndx("REDO");
+    }
+  }
 
   const saveInformation = (newPosition?: IPosition) => {
     const currentPostition = newPosition || position;
-    console.log("New position: " + JSON.stringify(currentPostition));
+    localStorage.setItem('lastPosition', JSON.stringify({currentPostition, text}));
     if (!text || text === "") {
       setOpen(true);
       setAlertText("Please enter the text. It can not be empty.");
@@ -66,6 +91,7 @@ export const PlayerContent = ({ serviceResult }: IPlayerContent) => {
       }
     );
   };
+  
   const addVisualInfo = useMutation({
     mutationFn: (info: any) =>
       fetch(SaveNewVisualInfoAddress, {
@@ -94,9 +120,8 @@ export const PlayerContent = ({ serviceResult }: IPlayerContent) => {
           play,
           text,
           setText,
-          position: serviceResult.position,
+          position,
           setPosition,
-          setOpen,
           saveInformation,
         }}
         component={DraggableText}
@@ -108,6 +133,14 @@ export const PlayerContent = ({ serviceResult }: IPlayerContent) => {
         loop
         clickToPlay={false}
       />
+      <div>
+      <IconButton aria-label="delete" onClick={() => onUndoClick()} color="primary">
+        <UndoIcon />
+      </IconButton>
+      <IconButton aria-label="delete" onClick={() => onRedoClick()} disabled={false} color="primary">
+        <RedoIcon />
+      </IconButton>
+      </div>
       <UsertAlert
         open={open}
         setOpen={setOpen}

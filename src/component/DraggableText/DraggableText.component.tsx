@@ -6,6 +6,7 @@ import { AbsoluteFill } from "remotion";
 import { ITextElement } from "../../general/interface";
 import { useCurrentFrame } from "remotion";
 import "./DraggableText.css";
+import { pushNewWork } from "../../utils/updateWork";
 
 /**
  *   The Draggable component for text editing and changing position
@@ -23,44 +24,47 @@ export default function DraggableText({
   text,
   setText,
   position,
+  setPosition,
   saveInformation,
   pause,
   play,
 }: ITextElement) {
+  // const [localPosition, setLocalPosition] = useState(lastPosition?.currentPostition);
   const handleStop = (e: any, data: any) => {
-    const position = {
+    const temp = {
       x: data.x,
       y: data.y,
     };
-    setLocalPosition(position);
+    // setLocalPosition(position);
+    setPosition(temp);
     saveInformation(position);
   };
 
   const handleEnter = (e: any) => {
     if (e.key === "Enter") {
-      saveInformation();
+      saveInformation(position);
+      pushNewWork(position, text);
     }
   };
 
   // Draggable component does not work directly with position props, so the localPosition defined here
-  const [localPosition, setLocalPosition] = useState({
-    x: 0,
-    y: 0,
-  });
-  useEffect(() => {
-    if (position) {
-      setLocalPosition(position);
-    }
-  }, [position]);
-
+  // useEffect(() => {
+  //   if (position) {
+  //     setLocalPosition(position);
+  //   }
+  // }, [position]);
+  // useEffect(() => {
+  //   setLocalPosition(position);
+  // }, [position]);
   const frame = useCurrentFrame();
+
   return (
     <>
       <AbsoluteFill style={AbsoluteStyle}>
         <Draggable
           onStop={handleStop}
           bounds="parent"
-          position={localPosition}
+          position={position}
           onStart={() => pause()}
         >
           <div>

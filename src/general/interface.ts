@@ -4,6 +4,7 @@ export interface ITextElement {
   text: string | undefined;
   setText: Dispatch<SetStateAction<string | undefined>>;
   position?: IPosition;
+  setPosition: Dispatch<SetStateAction<IPosition>>;
   pause: () => void;
   play: () => void;
   saveInformation: (position?: IPosition) => void;
